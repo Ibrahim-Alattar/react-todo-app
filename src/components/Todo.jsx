@@ -58,30 +58,60 @@ export function Todo() {
   const doneCount = todos.filter((todo) => todo.done).length;
 
   return (
-    <form onSubmit={addTodo}>
-      <input onChange={handleChange} value={inputValue} type="text" />
-      <button type="submit">Add</button>
+    <div className="min-h-screen bg-gray-100 px-4 py-10">
+      <div className="mx-auto w-full max-w-lg rounded-lg bg-white p-6 shadow-md">
+        <h1 className="mb-4 text-center text-2xl font-bold">Todo App</h1>
 
-      <ul>
-        {todos.map(({ text, id, done }) => (
-          <TodoItem
-            key={id}
-            text={text}
-            onDelete={() => deleteTodo(id)}
-            done={done}
-            onToggle={() => toggleTodo(id)}
-            onUpdate={(newText) => updateTodo(id, newText)}
-          />
-        ))}
-      </ul>
+        <form onSubmit={addTodo}>
+          <div className="flex gap-2">
+            <input
+              className="min-w-0 flex-1 rounded-2xl border border-gray-300 px-3 py-1"
+              onChange={handleChange}
+              value={inputValue}
+              type="text"
+              placeholder="What needs doing?"
+              aria-label="New todo"
+            />
+            <button
+              className="cursor-pointer rounded px-6 py-2 text-sm text-white bg-green-500 hover:bg-green-400"
+              type="submit"
+            >
+              Add
+            </button>
+          </div>
 
-      <div>
-        {doneCount} of {todos.length} done
+          {todos.length === 0 ? (
+            <p className="my-6 text-center text-gray-400">No todos yet.</p>
+          ) : (
+            <ul className="mt-4">
+              {todos.map(({ text, id, done }) => (
+                <TodoItem
+                  key={id}
+                  text={text}
+                  onDelete={() => deleteTodo(id)}
+                  done={done}
+                  onToggle={() => toggleTodo(id)}
+                  onUpdate={(newText) => updateTodo(id, newText)}
+                />
+              ))}
+            </ul>
+          )}
+
+          <p className="my-6 text-center text-gray-500">
+            {doneCount} of {todos.length} done
+          </p>
+
+          {todos.length > 0 && (
+            <button
+              className="mx-auto block cursor-pointer rounded px-8 py-2 text-sm text-white bg-gray-700 hover:bg-gray-500"
+              type="button"
+              onClick={clearTodos}
+            >
+              Clear
+            </button>
+          )}
+        </form>
       </div>
-
-      <button type="button" onClick={clearTodos}>
-        Clear
-      </button>
-    </form>
+    </div>
   );
 }
